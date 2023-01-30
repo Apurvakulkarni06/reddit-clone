@@ -1,5 +1,6 @@
 import '@fontsource/open-sans'
-import { extendTheme } from "@chakra-ui/react"
+import { extendTheme } from "@chakra-ui/react";
+import {Button} from "./button";
 export const theme = extendTheme({
     colors:{
     brand:{
@@ -16,4 +17,7 @@ export const theme = extendTheme({
             }
         })
     },
+    components:{
+        Button,
+    }
 })
