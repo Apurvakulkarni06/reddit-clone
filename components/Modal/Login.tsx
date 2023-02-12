@@ -65,7 +65,7 @@ const Login: React.FC<LoginProps> = () => {
       </Button>
       <Flex fontSize="9pt" align="center" justify="center">
         <Text mr={1}>New here ?</Text>
-        <Text color="blue.500" cursor="pointer" onClick={()=> setAuthModalState((prev)=> ({...prev, view:"signup"}))}>Sign Up</Text>
+        <Text color="blue.500" cursor="pointer" fontWeight={700} onClick={()=> setAuthModalState((prev)=> ({...prev, view:"signup"}))}>Sign Up</Text>
       </Flex>
     </form>
   );
