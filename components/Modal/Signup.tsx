@@ -2,6 +2,8 @@ import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../atoms/authModalStateAtoms";
+import { auth } from "../../firebase/appInitialize";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 const Signup: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
@@ -10,6 +12,9 @@ const Signup: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
+  const [error, setError] = useState("");
+  const [createUserWithEmailAndPassword, userData, loading, userError] =
+    useCreateUserWithEmailAndPassword(auth);
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignupForm((prev) => ({
@@ -19,10 +24,19 @@ const Signup: React.FC = () => {
   };
   const onSubmitHandler = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (error) setError("");
+    if (signupForm.password !== signupForm.confirmPassword) {
+      setError("Password do not match!");
+      return;
+    }
+    // if password matches
+    createUserWithEmailAndPassword(signupForm.email, signupForm.password);
   };
+
   return (
-    <form>
+    <form onSubmit={(event)=>onSubmitHandler(event)}>
       <Input
+        required
         name="email"
         type="email"
         placeholder="Enter email"
@@ -30,17 +44,18 @@ const Signup: React.FC = () => {
         bg="gray.50"
         fontSize="10pt"
         _focus={{
-            outline:"none",
-            bg:"white",
-            border:"1px solid blue.500"
+          outline: "none",
+          bg: "white",
+          border: "1px solid blue.500",
         }}
         _hover={{
-            bg:"white",
-            border:"1px solid blue.500"
+          bg: "white",
+          border: "1px solid blue.500",
         }}
         onChange={changeHandler}
       />
       <Input
+        required
         name="password"
         type="password"
         placeholder="Enter Password"
@@ -48,17 +63,18 @@ const Signup: React.FC = () => {
         bg="gray.50"
         fontSize="10pt"
         _focus={{
-            outline:"none",
-            bg:"white",
-            border:"1px solid blue.500"
+          outline: "none",
+          bg: "white",
+          border: "1px solid blue.500",
         }}
         _hover={{
-            bg:"white",
-            border:"1px solid blue.500"
+          bg: "white",
+          border: "1px solid blue.500",
         }}
         onChange={changeHandler}
       />
       <Input
+        required
         name="confirmPassword"
         type="password"
         placeholder="Confirm Password"
@@ -66,18 +82,32 @@ const Signup: React.FC = () => {
         bg="gray.50"
         fontSize="10pt"
         _focus={{
-            outline:"none",
-            bg:"white",
-            border:"1px solid blue.500"
+          outline: "none",
+          bg: "white",
+          border: "1px solid blue.500",
         }}
         _hover={{
-            bg:"white",
-            border:"1px solid blue.500"
+          bg: "white",
+          border: "1px solid blue.500",
         }}
         onChange={changeHandler}
       />
-      <Button type="submit" mb={2} width="100%" height="36px">Sign Up</Button>
-      <Flex  fontSize="9pt" justifyContent="center">
+      {error && (
+        <Text align="center" color="red" fontSize="9pt">
+          {error}
+        </Text>
+      )}
+      <Button
+        type="submit"
+        mt={2}
+        mb={2}
+        width="100%"
+        height="36px"
+        isLoading={loading}
+      >
+        Sign Up
+      </Button>
+      <Flex fontSize="9pt" justifyContent="center">
         <Text mr={1}>Already have an account?</Text>
         <Text
           color="blue.500"
