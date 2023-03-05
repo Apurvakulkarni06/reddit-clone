@@ -3,6 +3,7 @@ import React from 'react'
 import { useRecoilValue } from 'recoil';
 import {authModalState} from "../../atoms/authModalStateAtoms";
 import Login from './Login';
+import ResetPassword from './ResetPassword';
 import Signup from './Signup';
 const AuthInputs: React.FC = () =>{
     const modalState = useRecoilValue(authModalState)

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../atoms/authModalStateAtoms";
 import { auth } from "../../firebase/appInitialize";
+import { FIREBASE_ERRORS } from "../../firebase/errors";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 const Signup: React.FC = () => {
@@ -34,7 +35,7 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <form onSubmit={(event)=>onSubmitHandler(event)}>
+    <form onSubmit={(event) => onSubmitHandler(event)}>
       <Input
         required
         name="email"
@@ -92,11 +93,11 @@ const Signup: React.FC = () => {
         }}
         onChange={changeHandler}
       />
-      {error && (
-        <Text align="center" color="red" fontSize="9pt">
-          {error}
-        </Text>
-      )}
+
+      <Text align="center" color="red" fontSize="9pt">
+        {error ||
+          FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
+      </Text>
       <Button
         type="submit"
         mt={2}
